@@ -1,0 +1,13 @@
+{
+    "db_dir": "db",
+    "dump_dir": "dump",
+    "out_dir": "out",
+    
+    "img_dir": "img",
+    
+    "db_specifics": {
+        "json": {
+            "db": "json"
+        }
+    }
+}

@@ -1,3 +1,5 @@
+*.ipynb
+bottletest.ipynb
 *.pyc
 __pycahce__
 */__pycache__

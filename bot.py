@@ -32,7 +32,7 @@ print('parts initalized')
 
 finbot = super_random_bottle()
 print('bottle generated')
-impath = f'out/out.png'
+impath = f'out.png'
 finbot[0][0].save(impath)
 print('bottle image saved')
 

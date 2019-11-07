@@ -223,6 +223,27 @@ def flip(part):
 
 
 
+
+def fit_square(image, sizex=1000, sizey=1000, marginx=100, marginy=100, padx=0, pady=0, produce_mask=False):
+    out = np.zeros((sizey+(2*pady),sizex+(2*padx),3), dtype='uint8')-1
+    imsizex, imsizey = image.size
+    if imsizex>=imsizey:
+        x = sizex-(2*marginy)
+        y = get_other_axis(x,imsizex,imsizey)
+        x0_offset = padx + marginx
+        y0_offset = int(pady + (sizey/2) - (y/2))
+    else:
+        y = sizey-(2*marginy)
+        x = get_other_axis(y,imsizey,imsizex)
+        y0_offset = pady + marginy
+        x0_offset = int(padx + (sizex/2) - (x/2))
+    imresize = image.resize((x,y))
+    out[y0_offset:y0_offset+y,x0_offset:x0_offset+x] = np.array(imresize)
+    return Image.fromarray(out)
+
+
+
+
 def random_pick_parts(
     n=None,
     n_min=2,

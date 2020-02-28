@@ -36,7 +36,8 @@ impath = f'out.png'
 fit_square(finbot[0][0]).save(impath)
 print('bottle image saved')
 
-message = get_fusion_name(finbot[1])
+bottle_vol, vol_unit = get_random_volume(finbot[0][0])
+message = get_fusion_name(finbot[1])+'\nVolume: '+str(bottle_vol)+' '+vol_units[vol_unit]+'s'
 comment_message = get_ingredients_as_str(finbot[1])
 print(message,comment_message,sep='\n')
 

@@ -1,3 +1,8 @@
+# TODO list:
+# - Add mililiters
+# - Add names and random sentences
+# - Add bg
+
 from PIL import Image, ImageOps
 import numpy as np
 #from matplotlib import pyplot as plt
@@ -5,7 +10,7 @@ import json
 import numpy as np
 from numpy import random as rd
 
-
+from enum import Enum
 
 def get_other_axis(x,xrate,yrate):
     return int(round((x*yrate)/xrate))
@@ -296,3 +301,17 @@ def get_ingredients_as_str(picks):
 
 def get_fusion_name(picks):
     return ''.join([p[1][0][i%len(p[1][0])] for i, p in enumerate(picks)])
+
+vol_units = {
+    'ml' : 'mililiter',
+    'l' : 'liter',
+    'cc' : 'cubic centimeter',
+    'gal' : 'gallon',
+    'cat' : 'ambsolumte umnit'
+}
+
+def get_random_volume(bottleimg):
+    if bottleimg:
+        return bottleimg.size[1], np.random.choice([x for x in vol_units])
+    else:
+        np.random.randint(100,5000), np.random.choice([x for x in vol_units])

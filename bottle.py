@@ -229,7 +229,7 @@ def flip(part):
 
 
 
-def fit_square(image, sizex=1000, sizey=1000, marginx=100, marginy=100, padx=0, pady=0, produce_mask=False):
+def fit_square(image, sizex=1000, sizey=1000, marginx=100, marginy=100, padx=0, pady=0, produce_mask=False, dump_data=False):
     out = np.zeros((sizey+(2*pady),sizex+(2*padx),3), dtype='uint8')-1
     imsizex, imsizey = image.size
     if imsizex>=imsizey:
@@ -244,7 +244,8 @@ def fit_square(image, sizex=1000, sizey=1000, marginx=100, marginy=100, padx=0, 
         x0_offset = int(padx + (sizex/2) - (x/2))
     imresize = image.resize((x,y))
     out[y0_offset:y0_offset+y,x0_offset:x0_offset+x] = np.array(imresize)
-    return Image.fromarray(out)
+    if dump_data: return Image.fromarray(out), x, y, x0_offset, y0_offset
+    else: return Image.fromarray(out)
 
 
 

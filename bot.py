@@ -3,6 +3,7 @@ import tweepy
 from bottle import *
 import json
 import os
+from scene import super_random_scene
 #from time import time_ns
 
 print('imports finished')
@@ -32,14 +33,16 @@ print('parts initalized')
 
 finbot = super_random_bottle()
 print('bottle generated')
-impath = f'out.png'
-fit_square(finbot[0][0]).save(impath)
+impath = ('out.png', 'out_base.png')
+fit_square(finbot[0][0]).save(impath[1])
+scene, fusion_name, ingredients, scene_name = super_random_scene((finbot[0][0],finbot[1]))
+scene.save(impath[0])
 print('bottle image saved')
 
 bottle_vol, vol_unit = get_random_volume(finbot[0][0])
-message = get_fusion_name(finbot[1])+'\nVolume: '+str(bottle_vol)+' '+vol_units[vol_unit]+'s'
-comment_message = get_ingredients_as_str(finbot[1])
-print(message,comment_message,sep='\n')
+message = '[EXPERIMENT POST - UNSTABLE]\n'+fusion_name+'\nVolume: '+str(bottle_vol)+' '+vol_units[vol_unit]+'s\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
+comment_message = ingredients+f'\nBackground: {scene_name}'
+print(message,scene_name,comment_message,sep='\n')
 
 print('INITIALIZING SOCIAL MEDIA OBJECTS')
 graph = facebook.GraphAPI(ENV["FB_ACC_TOKEN_PAINTMIN"])
@@ -49,15 +52,16 @@ auth.set_access_token(ENV["TWITTER_ACC_TOKEN"], ENV["TWITTER_ACC_TOKEN_SECRET"])
 api = tweepy.API(auth)
 print('Twitter API object initialized')
 
-fb_post = graph.put_photo(image=open(impath, 'rb'), message=message)
+fb_post = graph.put_photo(image=open(impath[0], 'rb'), message=message)
 post_id = fb_post['post_id']
 print(post_id)
 
-fb_comment = graph.put_comment(object_id=post_id, message=comment_message)
+#fb_comment = graph.put_comment(object_id=post_id, message=comment_message)
+fb_comment = graph.put_object(parent_object=post_id,connection_name='comments/comments',source=open(impath[1],'rb').read(),message=comment_message)
 print(fb_comment['id'])
 
-posted_tweet = api.update_with_media(impath,message)
+posted_tweet = api.update_with_media(impath[0],message)
 print(posted_tweet.id)
 
-posted_reply = api.update_status(comment_message,in_reply_to_status_id = posted_tweet.id)
+posted_reply = api.update_with_media(impath[1],comment_message,in_reply_to_status_id = posted_tweet.id)
 print(posted_reply.id)

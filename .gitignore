@@ -5,3 +5,5 @@ __pycahce__
 */__pycache__
 auth.json
 procfile~
+dump
+convolve.py

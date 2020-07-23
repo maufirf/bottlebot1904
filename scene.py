@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt # WHY? I DON'T NEED THIS ON SERVER USE. WHY DID I ADD THIS?
 from PIL import Image
 import bottle
 import json

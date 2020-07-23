@@ -52,7 +52,8 @@ print('bottle image saved')
 bottle_vol, vol_unit = get_random_volume(finbot[0][0])
 #message = '[EXPERIMENT POST - UNSTABLE]\n'+fusion_name+'\nVolume: '+str(bottle_vol)+' '+vol_units[vol_unit]+'s\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
 #message = f'[EXPERIMENT POST - UNSTABLE]\n{get_caption(namefake_maiden,fusion_name)}\n\nVolume: {str(bottle_vol)}\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
-message = f'[EXPERIMENT POST - UNSTABLE]\n{get_caption(fusion_name)}\n\nVolume: {str(bottle_vol)} {vol_units[vol_unit]}s\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
+#message = f'[EXPERIMENT POST - UNSTABLE]\n{get_caption(fusion_name)}\n\nVolume: {str(bottle_vol)} {vol_units[vol_unit]}s\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
+message = f'{get_caption(fusion_name)}\n\nVolume: {str(bottle_vol)} {vol_units[vol_unit]}s'
 comment_message = ingredients+f'\nBackground: {scene_name}'
 print(message,scene_name,comment_message,sep='\n')
 

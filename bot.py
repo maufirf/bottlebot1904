@@ -4,6 +4,8 @@ from bottle import *
 import json
 import os
 from scene import super_random_scene
+import requests
+from captionstory import get_caption
 #from time import time_ns
 
 print('imports finished')
@@ -33,14 +35,24 @@ print('parts initalized')
 
 finbot = super_random_bottle()
 print('bottle generated')
-impath = ('out.png', 'out_base.png')
+impath = (f'{db_dir}/out.png', f'{db_dir}/out_base.png')
 fit_square(finbot[0][0]).save(impath[1])
 scene, fusion_name, ingredients, scene_name = super_random_scene((finbot[0][0],finbot[1]))
+print('scene generated')
 scene.save(impath[0])
 print('bottle image saved')
 
+#print('fetching data from api.namefake.com')
+#namefake_response = requests.get('https://api.namefake.com/')
+#print('fetched, extracting name')
+#namefake_dict = json.loads(namefake_response.content)
+#namefake_maiden = namefake_dict['maiden_name']
+#print(f'extracted name: {namefake_maiden}')
+
 bottle_vol, vol_unit = get_random_volume(finbot[0][0])
-message = '[EXPERIMENT POST - UNSTABLE]\n'+fusion_name+'\nVolume: '+str(bottle_vol)+' '+vol_units[vol_unit]+'s\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
+#message = '[EXPERIMENT POST - UNSTABLE]\n'+fusion_name+'\nVolume: '+str(bottle_vol)+' '+vol_units[vol_unit]+'s\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
+#message = f'[EXPERIMENT POST - UNSTABLE]\n{get_caption(namefake_maiden,fusion_name)}\n\nVolume: {str(bottle_vol)}\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
+message = f'[EXPERIMENT POST - UNSTABLE]\n{get_caption(fusion_name)}\n\nVolume: {str(bottle_vol)} {vol_units[vol_unit]}s\n\nNote: https://web.facebook.com/bottlebot1904/posts/288772702555478'
 comment_message = ingredients+f'\nBackground: {scene_name}'
 print(message,scene_name,comment_message,sep='\n')
 
@@ -57,7 +69,8 @@ post_id = fb_post['post_id']
 print(post_id)
 
 #fb_comment = graph.put_comment(object_id=post_id, message=comment_message)
-fb_comment = graph.put_object(parent_object=post_id,connection_name='comments/comments',source=open(impath[1],'rb').read(),message=comment_message)
+#fb_comment = graph.put_object(parent_object=post_id,connection_name='comments',source=('out_base.png',open(impath[1],'rb'),'image/png'),message=comment_message)
+fb_comment = graph.put_photo(image=open(impath[1], 'rb'), album_path=f'{post_id}/comments',message=comment_message)
 print(fb_comment['id'])
 
 posted_tweet = api.update_with_media(impath[0],message)

@@ -7,3 +7,5 @@ auth.json
 procfile~
 dump
 convolve.py
+out.png
+out_base.png
